@@ -1,0 +1,15 @@
+html,body {
+  text-align: center;
+  font-size: 14px;
+}
+
+h1 {
+  color: rgb(218, 42, 42);
+  font-size: 48px;
+}
+
+.logo {
+  margin-top: 150px;
+  width: 200px;
+  height: 200px;
+}
