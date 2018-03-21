@@ -1,6 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const PxtoremWebpackPlugin = require('../');
+const PxtoremWebpackPlugin = require('pxtorem-webpack-plugin');
 
 module.exports = {
   // 入口文件
