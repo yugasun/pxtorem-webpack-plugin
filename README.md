@@ -46,9 +46,7 @@ This will generate a file dist/index.html containing the following:
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script>
-  var designBaseWidth=750;!function(e,t){var n=e.documentElement,i="orientationchange"in window?"orientationchange":"resize",d=function(){var e=n.clientWidth;n.style.fontSize=e/t.designBaseWidth*10+"px",n.setAttribute("data-dpr",Math.floor(window.devicePixelRatio))};d(),e.addEventListener&&t.addEventListener(i,d,!1)}(document,window);
-  </script>
+  <script>!function(e,t){var n=e.documentElement,i="orientationchange"in window?"orientationchange":"resize",d=function(){var e=n.clientWidth;n.style.fontSize=e/750*10+"px",n.setAttribute("data-dpr",Math.floor(window.devicePixelRatio))};d(),e.addEventListener&&t.addEventListener(i,d,!1)}(document,window);</script>
   <meta charset="UTF-8">
   <title>Vue webpack demo</title>
 </head>
@@ -61,7 +59,6 @@ This will generate a file dist/index.html containing the following:
 
 ## Options
 
-
 You can pass a hash of configuration options to html-webpack-plugin. Allowed values are as follows:
 
 |Name|Type|Default|Description|
@@ -71,6 +68,32 @@ You can pass a hash of configuration options to html-webpack-plugin. Allowed val
 |**[`baseDpr`](#)**|`{Number}`|`2`|base device pixel ratio|
 |**[`remUnit`](#)**|`{Number}`|`75`| `rem` unit value |
 
+## Features
+
+- [x] Auto convert px to rem unit depends on customize base configuration.
+- [x] Inject script into template for auto calculating `html` root font-size
+
+Below is the source code for injected scripts:
+
+```js
+(function (doc, win) {
+  var docEl = doc.documentElement
+  var resizeEvent = 'orientationchange' in window ? 'orientationchange' : 'resize'
+  var recalcFun = function () {
+    var clientWidth = docEl.clientWidth
+    // baseWidth will be replace by `options.baseWidth`
+    // remUnit will be replace by `options.remUnit`
+    docEl.style.fontSize = remUnit * (clientWidth / baseWidth) + 'px'
+    // for dpr=2.xx -> 2, dpr=3.xx -> 3
+    docEl.setAttribute('data-dpr', Math.floor(window.devicePixelRatio))
+  }
+  recalcFun()
+  if (!doc.addEventListener) return
+  win.addEventListener(resizeEvent, recalcFun, false)
+})(document, window)
+```
+
+> If you want calculate px to rem more customized, and want to change the convert rules, you can refer to [px2rem.scss](https://github.com/yugasun/px2rem.scss)
 
 ## License
 
